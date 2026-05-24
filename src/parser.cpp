@@ -4,6 +4,17 @@
 #include "lexer.hpp"
 #include "macros/unwrap.hpp"
 
+// MSVC: `return {}` in trailing-return optional methods is diagnosed as void.
+#undef bail
+#undef ensure
+#undef unwrap
+#undef unwrap_mut
+#define bail(...) do { CUTIL_MACROS_PRINT_FUNC("assertion failed" __VA_OPT__(": ") __VA_ARGS__); return std::nullopt; } while(0)
+#define ensure(cond, ...) do { if(!(cond)) { CUTIL_MACROS_PRINT_FUNC("assertion failed" __VA_OPT__(": ") __VA_ARGS__); return std::nullopt; } } while(0)
+#define unwrap(var, opt, ...) const auto var##_o = (opt); if(!(var##_o)) { return std::nullopt; } const auto& var = *var##_o;
+#define unwrap_mut(var, opt, ...) const auto var##_o = (opt); if(!(var##_o)) { return std::nullopt; } auto& var = *var##_o;
+
+
 namespace json {
 namespace {
 class Parser {
@@ -22,25 +33,31 @@ class Parser {
     }
 
     auto peek() -> const Token* {
-        ensure(cursor < tokens.size());
+        if(!(cursor < tokens.size())) return nullptr;
         return &tokens[cursor];
     }
 
     template <class T>
     auto peek_type() -> const T* {
-        unwrap(next, peek());
+        const auto next_o = peek();
+        if(!next_o) return nullptr;
+        const auto& next = *next_o;
         return next.get<T>();
     }
 
     auto read() -> const Token* {
-        unwrap(next, peek());
+        const auto next_o = peek();
+        if(!next_o) return nullptr;
+        const auto& next = *next_o;
         cursor += 1;
         return &next;
     }
 
     template <class T>
     auto read_type() -> const T* {
-        unwrap(next, read());
+        const auto next_o = read();
+        if(!next_o) return nullptr;
+        const auto& next = *next_o;
         return next.get<T>();
     }
 
