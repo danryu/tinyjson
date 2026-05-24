@@ -2,7 +2,7 @@
 
 #include "json.hpp"
 #include "lexer.hpp"
-#include "macros/unwrap.hpp"
+#include "macros/optional-return.hpp"
 
 namespace json {
 namespace {
@@ -22,25 +22,31 @@ struct Parser {
     }
 
     auto peek() -> const Token* {
-        ensure(cursor < tokens.size());
+        if(!(cursor < tokens.size())) return nullptr;
         return &tokens[cursor];
     }
 
     template <class T>
     auto peek_type() -> const T* {
-        unwrap(next, peek());
+        const auto next_o = peek();
+        if(!next_o) return nullptr;
+        const auto& next = *next_o;
         return next.get<T>();
     }
 
     auto read() -> const Token* {
-        unwrap(next, peek());
+        const auto next_o = peek();
+        if(!next_o) return nullptr;
+        const auto& next = *next_o;
         cursor += 1;
         return &next;
     }
 
     template <class T>
     auto read_type() -> const T* {
-        unwrap(next, read());
+        const auto next_o = read();
+        if(!next_o) return nullptr;
+        const auto& next = *next_o;
         return next.get<T>();
     }
 
