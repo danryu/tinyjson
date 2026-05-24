@@ -2,7 +2,7 @@
 
 #include "json.hpp"
 #include "lexer.hpp"
-#include "macros/optional-return.hpp"
+#include "macros/unwrap.hpp"
 
 namespace json {
 namespace {

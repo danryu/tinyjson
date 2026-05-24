@@ -3,7 +3,6 @@
 
 #include "lexer.hpp"
 #include "macros/unwrap.hpp"
-#include "macros/optional-return.hpp"
 #include "string-reader/string-reader.hpp"
 
 #include "util/charconv.hpp"
