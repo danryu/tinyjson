@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TINYJSON_JSON_HPP
+#define TINYJSON_JSON_HPP
 #include <string>
 #include <vector>
 
@@ -109,3 +110,5 @@ auto parse(std::string_view str, ParseOpts opts = {}) -> std::optional<Object>;
 // deparser.cpp
 auto deparse(const Object& object) -> std::string;
 } // namespace json
+
+#endif // TINYJSON_JSON_HPP
