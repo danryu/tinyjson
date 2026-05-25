@@ -1,3 +1,3 @@
-cutil https://github.com/mojyack/cutil.git 727f2eb4fced457d3b8ccf21e82408a3a4fa3df5
-cutil-macros https://github.com/mojyack/cutil-macros.git 986ced60b3c5c99364201f83a26ee5433a91a5f8
-string-reader https://github.com/mojyack/string-reader.git 13e3180e183d1d98f8112314463e6ae60577fccf
+cutil https://github.com/danryu/cutil.git kdev3
+cutil-macros https://github.com/danryu/cutil-macros.git kdev3
+string-reader https://github.com/danryu/string-reader.git kdev3
